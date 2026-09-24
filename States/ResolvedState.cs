@@ -1,18 +1,18 @@
-public class ResolvedState : IncidentState
+public class ResolvedState : IncidentStateBase
 {
     public override string Name => "решена";
 
-    public override void Close(Incident incident)
+    public override IncidentStateBase HandleClose(Incident incident)
     {
         incident.ClosedDate = DateTime.Now;
-        incident.SetState(new ClosedState());
         Console.WriteLine("заявка закрыта");
+        return new ClosedState();
     }
 
-    public override void Reopen(Incident incident, string reason)
+    public override IncidentStateBase HandleReopen(Incident incident, string reason)
     {
         incident.ResolvedDate = null;
-        incident.SetState(new InProgressState());
         Console.WriteLine($"заявка открыта заново, причина: {reason}");
+        return new InProgressState();
     }
 }
